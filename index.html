@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>学术MBTI：测测你的导师属于哪一类？</title>
+    <title>学术MBTI：测测你的导师属于哪一类？ | Original by Academic-MBTI</title>
     <style>
         :root { 
             --primary: #2c3e50; 
@@ -23,6 +23,9 @@
             align-items: center; 
             min-height: 100vh; 
             -webkit-tap-highlight-color: transparent;
+            /* 防拷贝：禁止用户选中文本 */
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         #app { 
@@ -35,9 +38,20 @@
             margin: 20px auto; 
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4);
+            position: relative;
         }
 
-        /* 进度条美化 */
+        /* 计数器样式 */
+        .counter-box { 
+            font-size: 11px; 
+            color: #95a5a6; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px;
+        }
+        .counter-box img { height: 16px; filter: grayscale(1) opacity(0.7); }
+
         .progress-container { margin-bottom: 35px; }
         .progress-bar { height: 8px; background: rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden; }
         .progress-fill { 
@@ -54,7 +68,6 @@
 
         h2 { font-size: 1.25rem; line-height: 1.5; margin-bottom: 35px; min-height: 70px; color: var(--primary); }
 
-        /* 选项按钮美化 */
         .options { display: flex; flex-direction: column; gap: 14px; }
         .opt-btn { 
             background: white; 
@@ -75,9 +88,7 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
         }
-        .opt-btn:active { transform: scale(0.98); }
 
-        /* 结果页美化 */
         #result { display: none; text-align: center; animation: fadeIn 0.8s ease; }
         .result-badge {
             width: 80px; height: 80px; background: var(--accent); margin: 0 auto 20px;
@@ -87,7 +98,6 @@
         .type-code { font-size: 3.5rem; color: var(--accent); font-weight: 800; margin: 5px 0; letter-spacing: -1px; }
         .type-name { font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
         
-        /* 维度能量柱 */
         .stats-container { display: flex; justify-content: space-between; margin: 25px 0; background: #fdfdfd; padding: 15px; border-radius: 12px; }
         .stat-item { flex: 1; font-size: 12px; color: #7f8c8d; }
         .stat-emoji { font-size: 20px; display: block; margin-bottom: 5px; }
@@ -103,19 +113,22 @@
             padding: 14px 40px; border-radius: 30px; cursor: pointer; 
             font-size: 16px; font-weight: 600; transition: 0.3s;
         }
-        .btn-retry:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .footer { font-size: 11px; color: #bdc3c7; margin-top: 40px; text-align: center; line-height: 1.5; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .footer { font-size: 11px; color: #bdc3c7; margin-top: 40px; text-align: center; line-height: 1.5; }
     </style>
 </head>
-<body>
-
-<div id="app">
+<body oncontextmenu="return false;"> <div id="app">
     <div id="quiz-ui">
+        <div class="counter-box">
+            <span>已有</span>
+            <img src="https://count.getloli.com/get/@academic-mbti-unique-id?theme=asoul" alt="visitor count">
+            <span>位同门参与画像定位</span>
+        </div>
+
         <div class="progress-container">
             <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
             <div class="progress-text" id="progress-val">1 / 32</div>
@@ -133,12 +146,12 @@
 
         <div class="type-desc" id="res-desc"></div>
         <button class="btn-retry" onclick="location.reload()">再测一次</button>
-        <p class="footer">本测试结果仅供参考<br>分享到朋友圈，看看同门的导师是什么样？</p>
+        <p class="footer">© 2024 Academic-MBTI Original<br>未经授权禁止转载题目逻辑或文案</p>
     </div>
 </div>
 
 <script>
-// 完整题库数据 [cite: 5-12, 15-22, 25-32, 35-42]
+// 完整题库数据
 const questions = [
     {q: "1. 导师对你论文初稿的修改意见是否能细致到标点符号、图表格式？", d: "A"},
     {q: "2. 导师是否能清晰记得你上周实验的具体进展或具体数据？", d: "A"},
@@ -174,7 +187,7 @@ const questions = [
     {q: "32. 导师对于组内规矩、权力边界的界定是否清晰透明，没有所谓的“潜规则”？", d: "D"}
 ];
 
-// 分类文案库 [cite: 45, 47]
+// 分类文案库
 const resultLib = {
     "AEGD": { name: "学术活菩萨", desc: "【顶配导师】 既给你搬砖的钱，又教你砌墙的技术。他署名慷慨，说话直球，组内基本都是硕转博的“回头客”。在他手下，你只需要努力，剩下的他都会帮你搞定。" },
     "AEGS": { name: "温柔陷阱师", desc: "【高情商掌控者】 态度极好，甚至会帮你改标点符号，但他说话极其委婉。当他微笑着说“要不你再调研一下”时，其实是在否定你的方案。在他组里，你需要极强的“听力”来拆解潜台词。" },
@@ -246,7 +259,6 @@ function showResult() {
     document.getElementById('res-name').innerText = res.name;
     document.getElementById('res-desc').innerText = res.desc;
 
-    // 动态生成能量数据
     const statsHtml = `
         <div class="stat-item"><span class="stat-emoji">${scores.A >= 24 ? '📚' : '🍃'}</span>学术: ${scores.A >= 24 ? '高' : '低'}</div>
         <div class="stat-item"><span class="stat-emoji">${scores.E >= 24 ? '❤️' : '🗿'}</span>情感: ${scores.E >= 24 ? '暖' : '冷'}</div>
@@ -257,6 +269,11 @@ function showResult() {
     
     document.getElementById('result').style.display = 'block';
     window.scrollTo(0, 0);
+
+    // 域名校验（防盗链逻辑）
+    if (!window.location.hostname.includes("github.io") && !window.location.hostname.includes("localhost")) {
+        console.warn("Unauthorized domain.");
+    }
 }
 
 renderQuestion();
