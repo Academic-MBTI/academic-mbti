@@ -6,16 +6,16 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
-  <title>学术MBTI：测测你的导师属于哪一类？</title>
+  <title>导师图鉴：测测你的导师属于哪一类？</title>
   <meta
     name="description"
-    content="32题解析你的导师风格，测测他是学术活菩萨、硬核学术暴君，还是深渊监考官。"
+    content="导师图鉴（SPTI）：用 32 道题测测你的导师属于哪一类，生成你的导师风格画像。"
   />
   <meta name="theme-color" content="#4f8fd9" />
-  <meta property="og:title" content="学术MBTI：测测你的导师属于哪一类？" />
+  <meta property="og:title" content="导师图鉴：测测你的导师属于哪一类？" />
   <meta
     property="og:description"
-    content="32题解析你的导师风格，看看你的导师到底属于哪一类。"
+    content="导师图鉴（SPTI）：32 道题生成你的导师风格画像，看看他究竟是学术活菩萨还是深渊监考官。"
   />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -103,7 +103,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
     }
 
     .brand {
@@ -133,6 +133,13 @@
       font-size: 12px;
       color: var(--soft-text);
       white-space: nowrap;
+    }
+
+    .intro-text {
+      margin: 0 0 18px;
+      font-size: 14px;
+      color: var(--soft-text);
+      line-height: 1.7;
     }
 
     .progress-wrap {
@@ -273,7 +280,6 @@
       cursor: not-allowed;
     }
 
-    /* Result */
     #result {
       display: none;
       animation: fadeIn 0.5s ease;
@@ -482,17 +488,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      border: 0;
-    }
-
     .opt-btn:focus-visible,
     .btn-primary:focus-visible,
     .btn-secondary:focus-visible,
@@ -573,10 +568,12 @@
         <div class="topbar">
           <div class="brand">
             <span class="brand-dot"></span>
-            <span>Academic MBTI</span>
+            <span>导师图鉴 · SPTI</span>
           </div>
-          <div class="mini-note">轻松测试 · 仅供参考</div>
+          <div class="mini-note">导师风格测试 · 仅供参考</div>
         </div>
+
+        <p class="intro-text">用 32 道题，生成你的导师风格画像。</p>
 
         <div class="progress-wrap">
           <div class="progress-meta">
@@ -613,8 +610,8 @@
         </div>
 
         <div class="footer">
-          Academic MBTI Original © 2026<br />
-          欢迎分享给同门一起测测
+          导师图鉴 © 2026<br />
+          SPTI · Supervisor Profile Type Index
         </div>
       </section>
     </div>
@@ -623,7 +620,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const STORAGE_KEY = "academic_mbti_quiz_v3";
+    const STORAGE_KEY = "supervisor_profile_type_index_quiz_v1";
     const QUESTIONS_PER_DIM = 8;
     const THRESHOLD = 3.2;
 
@@ -989,10 +986,10 @@
       const code = getTypeCode();
       const res = resultLib[code] || resultLib.IELD;
       return [
-        `我的导师测试结果：${code}｜${res.name}`,
+        `我刚测了导师图鉴（SPTI），结果是：${code}｜${res.name}`,
         getSubtitle(code),
         res.desc,
-        `来测测你的：${location.href}`
+        `来测测你的导师属于哪一类：${location.href}`
       ].join("\n");
     }
 
@@ -1003,7 +1000,7 @@
 
     async function handleShare() {
       const shareData = {
-        title: "学术MBTI：测测你的导师属于哪一类？",
+        title: "导师图鉴：测测你的导师属于哪一类？",
         text: buildResultText(),
         url: location.href
       };
