@@ -5,26 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>学术MBTI：测测你的导师属于哪一类？</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; --text: #333; }
-        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        #app { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); max-width: 500px; width: 90%; margin: 20px auto; }
-        .progress-container { margin-bottom: 25px; }
-        .progress-bar { height: 6px; background: #eee; border-radius: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s; }
-        .progress-text { font-size: 12px; color: #888; margin-top: 8px; text-align: right; }
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #3498db; 
+            --success: #2ecc71;
+            --bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            --text: #2c3e50; 
+        }
+
+        body { 
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #app { 
+            background: rgba(255, 255, 255, 0.9); 
+            padding: 40px 30px; 
+            border-radius: 24px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1); 
+            max-width: 480px; 
+            width: 90%; 
+            margin: 20px auto; 
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* 进度条美化 */
+        .progress-container { margin-bottom: 35px; }
+        .progress-bar { height: 8px; background: rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden; }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--accent), var(--success)); 
+            width: 0%; 
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+        .progress-text { font-size: 13px; color: #7f8c8d; margin-top: 10px; font-weight: 500; }
+
         .question-card { display: none; }
-        .question-card.active { display: block; animation: fadeIn 0.4s; }
-        h2 { font-size: 1.15rem; line-height: 1.6; margin-bottom: 30px; min-height: 60px; }
-        .options { display: flex; flex-direction: column; gap: 12px; }
-        .opt-btn { background: #fff; border: 1.5px solid #e0e0e0; padding: 14px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 14px; text-align: left; }
-        .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; }
-        #result { display: none; text-align: center; }
-        .type-code { font-size: 3rem; color: var(--accent); font-weight: bold; margin: 10px 0; letter-spacing: 2px; }
-        .type-name { font-size: 1.5rem; color: var(--primary); margin-bottom: 15px; }
-        .type-desc { font-size: 14px; line-height: 1.7; color: #666; text-align: left; background: #f9f9f9; padding: 15px; border-radius: 10px; border-left: 4px solid var(--accent); }
-        .btn-retry { margin-top: 25px; background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .footer { font-size: 10px; color: #ccc; margin-top: 30px; text-align: center; }
+        .question-card.active { display: block; animation: slideUp 0.5s ease; }
+
+        h2 { font-size: 1.25rem; line-height: 1.5; margin-bottom: 35px; min-height: 70px; color: var(--primary); }
+
+        /* 选项按钮美化 */
+        .options { display: flex; flex-direction: column; gap: 14px; }
+        .opt-btn { 
+            background: white; 
+            border: 1px solid rgba(0,0,0,0.05); 
+            padding: 16px 20px; 
+            border-radius: 14px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            font-size: 15px; 
+            text-align: left;
+            font-weight: 500;
+            color: #444;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .opt-btn:hover { 
+            border-color: var(--accent); 
+            background: #f8fbff; 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
+        }
+        .opt-btn:active { transform: scale(0.98); }
+
+        /* 结果页美化 */
+        #result { display: none; text-align: center; animation: fadeIn 0.8s ease; }
+        .result-badge {
+            width: 80px; height: 80px; background: var(--accent); margin: 0 auto 20px;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            animation: rotateBg 15s infinite linear;
+        }
+        .type-code { font-size: 3.5rem; color: var(--accent); font-weight: 800; margin: 5px 0; letter-spacing: -1px; }
+        .type-name { font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
+        
+        /* 维度能量柱 */
+        .stats-container { display: flex; justify-content: space-between; margin: 25px 0; background: #fdfdfd; padding: 15px; border-radius: 12px; }
+        .stat-item { flex: 1; font-size: 12px; color: #7f8c8d; }
+        .stat-emoji { font-size: 20px; display: block; margin-bottom: 5px; }
+
+        .type-desc { 
+            font-size: 14px; line-height: 1.8; color: #555; text-align: left; 
+            background: rgba(52, 152, 219, 0.05); padding: 20px; border-radius: 15px; 
+            border-left: 5px solid var(--accent); margin-bottom: 30px;
+        }
+
+        .btn-retry { 
+            background: var(--primary); color: white; border: none; 
+            padding: 14px 40px; border-radius: 30px; cursor: pointer; 
+            font-size: 16px; font-weight: 600; transition: 0.3s;
+        }
+        .btn-retry:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .footer { font-size: 11px; color: #bdc3c7; margin-top: 40px; text-align: center; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -39,12 +124,16 @@
     </div>
 
     <div id="result">
-        <p style="font-size: 14px; color: #888; margin-bottom: 5px;">测试完成，你的导师类型是</p>
+        <div class="result-badge"></div>
+        <p style="font-size: 14px; color: #95a5a6; margin-bottom: 0;">你的导师类型是</p>
         <div class="type-code" id="res-code"></div>
         <div class="type-name" id="res-name"></div>
+        
+        <div class="stats-container" id="res-stats"></div>
+
         <div class="type-desc" id="res-desc"></div>
-        <button class="btn-retry" onclick="location.reload()">重新测试</button>
-        <p class="footer">本测试结果仅供参考，不作为法律依据或学术评价建议</p>
+        <button class="btn-retry" onclick="location.reload()">再测一次</button>
+        <p class="footer">本测试结果仅供参考<br>分享到朋友圈，看看同门的导师是什么样？</p>
     </div>
 </div>
 
@@ -115,11 +204,11 @@ function renderQuestion() {
         <div class="question-card active">
             <h2>${q.q}</h2>
             <div class="options">
-                <button class="opt-btn" onclick="next(5)">非常符合 (5分)</button>
-                <button class="opt-btn" onclick="next(4)">比较符合 (4分)</button>
-                <button class="opt-btn" onclick="next(3)">一般 / 看情况 (3分)</button>
-                <button class="opt-btn" onclick="next(2)">比较不符合 (2分)</button>
-                <button class="opt-btn" onclick="next(1)">完全不符合 (1分)</button>
+                <button class="opt-btn" onclick="next(5)">🔥 非常符合</button>
+                <button class="opt-btn" onclick="next(4)">👍 比较符合</button>
+                <button class="opt-btn" onclick="next(3)">😐 一般 / 看情况</button>
+                <button class="opt-btn" onclick="next(2)">👎 比较不符合</button>
+                <button class="opt-btn" onclick="next(1)">❌ 完全不符合</button>
             </div>
         </div>
     `;
@@ -129,7 +218,7 @@ function renderQuestion() {
 function updateProgress() {
     const p = ((currentIdx) / questions.length) * 100;
     document.getElementById('progress').style.width = p + '%';
-    document.getElementById('progress-val').innerText = `${currentIdx + 1} / ${questions.length}`;
+    document.getElementById('progress-val').innerText = `已完成进度：${Math.round(p)}%`;
 }
 
 function next(val) {
@@ -147,7 +236,6 @@ function next(val) {
 function showResult() {
     document.getElementById('quiz-ui').style.display = 'none';
     
-    // 判定逻辑：每维度8题，满分40，中性点24分 [cite: 3, 13, 23, 33]
     const code = (scores.A >= 24 ? 'A' : 'I') + 
                  (scores.E >= 24 ? 'E' : 'R') + 
                  (scores.G >= 24 ? 'G' : 'L') + 
@@ -157,7 +245,18 @@ function showResult() {
     document.getElementById('res-code').innerText = code;
     document.getElementById('res-name').innerText = res.name;
     document.getElementById('res-desc').innerText = res.desc;
+
+    // 动态生成能量数据
+    const statsHtml = `
+        <div class="stat-item"><span class="stat-emoji">${scores.A >= 24 ? '📚' : '🍃'}</span>学术: ${scores.A >= 24 ? '高' : '低'}</div>
+        <div class="stat-item"><span class="stat-emoji">${scores.E >= 24 ? '❤️' : '🗿'}</span>情感: ${scores.E >= 24 ? '暖' : '冷'}</div>
+        <div class="stat-item"><span class="stat-emoji">${scores.G >= 24 ? '💰' : '📦'}</span>资源: ${scores.G >= 24 ? '壕' : '紧'}</div>
+        <div class="stat-item"><span class="stat-emoji">${scores.D >= 24 ? '💬' : '🌫️'}</span>沟通: ${scores.D >= 24 ? '直' : '绕'}</div>
+    `;
+    document.getElementById('res-stats').innerHTML = statsHtml;
+    
     document.getElementById('result').style.display = 'block';
+    window.scrollTo(0, 0);
 }
 
 renderQuestion();
