@@ -3,155 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>学术MBTI：测测你的导师属于哪一类？ | Original by Academic-MBTI</title>
+    <title>学术MBTI：测测你的导师属于哪一类？ | Original</title>
+    <meta name="description" content="32题深度解析你的导师风格，测测他是学术活菩萨还是深渊监考官。">
+    
     <style>
         :root { 
-            --primary: #2c3e50; 
-            --accent: #3498db; 
-            --success: #2ecc71;
-            --bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
-            --text: #2c3e50; 
+            --primary: #2c3e50; --accent: #3498db; --success: #2ecc71;
+            --bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); --text: #2c3e50; 
         }
 
         body { 
             font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            -webkit-tap-highlight-color: transparent;
-            /* 防拷贝：禁止用户选中文本 */
-            user-select: none;
-            -webkit-user-select: none;
+            background: var(--bg); color: var(--text); margin: 0; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh; -webkit-tap-highlight-color: transparent;
+            user-select: none; -webkit-user-select: none;
+            padding: env(safe-area-inset-top) 15px env(safe-area-inset-bottom);
         }
 
         #app { 
-            background: rgba(255, 255, 255, 0.9); 
-            padding: 40px 30px; 
-            border-radius: 24px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1); 
-            max-width: 480px; 
-            width: 90%; 
-            margin: 20px auto; 
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.92); padding: 40px 30px; 
+            border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); 
+            max-width: 480px; width: 100%; backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            position: relative;
         }
 
-        /* 计数器样式 */
-        .counter-box { 
-            font-size: 11px; 
-            color: #95a5a6; 
-            margin-bottom: 15px; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px;
-        }
-        .counter-box img { height: 16px; filter: grayscale(1) opacity(0.7); }
+        /* 计数器 */
+        .counter-box { font-size: 11px; color: #95a5a6; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
+        .counter-box img { height: 16px; filter: grayscale(1) opacity(0.6); }
 
+        /* 进度条：统一显示第 X / 32 题 */
         .progress-container { margin-bottom: 35px; }
-        .progress-bar { height: 8px; background: rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden; }
-        .progress-fill { 
-            height: 100%; 
-            background: linear-gradient(90deg, var(--accent), var(--success)); 
-            width: 0%; 
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
-        }
-        .progress-text { font-size: 13px; color: #7f8c8d; margin-top: 10px; font-weight: 500; }
+        .progress-bar { height: 6px; background: rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); width: 0%; transition: width 0.3s ease; }
+        .progress-text { font-size: 13px; color: #7f8c8d; margin-top: 10px; font-weight: 600; }
 
-        .question-card { display: none; }
-        .question-card.active { display: block; animation: slideUp 0.5s ease; }
+        h2 { font-size: clamp(1.1rem, 4vw, 1.25rem); line-height: 1.6; margin-bottom: 30px; min-height: 60px; color: var(--primary); }
 
-        h2 { font-size: 1.25rem; line-height: 1.5; margin-bottom: 35px; min-height: 70px; color: var(--primary); }
-
-        .options { display: flex; flex-direction: column; gap: 14px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
         .opt-btn { 
-            background: white; 
-            border: 1px solid rgba(0,0,0,0.05); 
-            padding: 16px 20px; 
-            border-radius: 14px; 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            font-size: 15px; 
-            text-align: left;
-            font-weight: 500;
-            color: #444;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            background: white; border: 1px solid rgba(0,0,0,0.08); 
+            padding: 16px 20px; border-radius: 14px; cursor: pointer; 
+            transition: all 0.2s ease; font-size: 15px; text-align: left;
+            font-weight: 500; color: #444;
         }
-        .opt-btn:hover { 
-            border-color: var(--accent); 
-            background: #f8fbff; 
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1);
-        }
+        .opt-btn:hover { border-color: var(--accent); background: #f8fbff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1); }
+        .opt-btn:active { transform: scale(0.98); }
 
-        #result { display: none; text-align: center; animation: fadeIn 0.8s ease; }
-        .result-badge {
-            width: 80px; height: 80px; background: var(--accent); margin: 0 auto 20px;
-            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
-            animation: rotateBg 15s infinite linear;
-        }
-        .type-code { font-size: 3.5rem; color: var(--accent); font-weight: 800; margin: 5px 0; letter-spacing: -1px; }
+        /* 结果页 */
+        #result { display: none; text-align: center; animation: fadeIn 0.6s ease; }
+        .type-code { font-size: 3.5rem; color: var(--accent); font-weight: 800; margin: 5px 0; }
         .type-name { font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
         
-        .stats-container { display: flex; justify-content: space-between; margin: 25px 0; background: #fdfdfd; padding: 15px; border-radius: 12px; }
-        .stat-item { flex: 1; font-size: 12px; color: #7f8c8d; }
-        .stat-emoji { font-size: 20px; display: block; margin-bottom: 5px; }
+        /* 能量条样式 */
+        .stats-container { margin: 25px 0; background: #fdfdfd; padding: 20px; border-radius: 15px; }
+        .stat-row { margin-bottom: 12px; }
+        .stat-label { display: flex; justify-content: space-between; font-size: 12px; color: #7f8c8d; margin-bottom: 5px; }
+        .stat-track { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
+        .stat-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 1s ease-out; }
 
-        .type-desc { 
-            font-size: 14px; line-height: 1.8; color: #555; text-align: left; 
-            background: rgba(52, 152, 219, 0.05); padding: 20px; border-radius: 15px; 
-            border-left: 5px solid var(--accent); margin-bottom: 30px;
-        }
+        .type-desc { font-size: 14px; line-height: 1.8; color: #555; text-align: left; background: rgba(52, 152, 219, 0.05); padding: 20px; border-radius: 15px; border-left: 5px solid var(--accent); margin-bottom: 30px; }
+        .btn-retry { background: var(--primary); color: white; border: none; padding: 14px 40px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: 600; }
 
-        .btn-retry { 
-            background: var(--primary); color: white; border: none; 
-            padding: 14px 40px; border-radius: 30px; cursor: pointer; 
-            font-size: 16px; font-weight: 600; transition: 0.3s;
-        }
+        .footer { font-size: 11px; color: #bdc3c7; margin-top: 40px; text-align: center; }
 
-        .footer { font-size: 11px; color: #bdc3c7; margin-top: 40px; text-align: center; line-height: 1.5; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div id="app">
+<body oncontextmenu="return false;">
+
+<div id="app">
     <div id="quiz-ui">
         <div class="counter-box">
-            <span>已有</span>
-            <img src="https://count.getloli.com/get/@academic-mbti-unique-id?theme=asoul" alt="visitor count">
-            <span>位同门参与画像定位</span>
+            已有 <img src="https://count.getloli.com/get/@academic-mbti-original?theme=asoul" alt="count"> 位同门参与测试
         </div>
 
         <div class="progress-container">
             <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-            <div class="progress-text" id="progress-val">1 / 32</div>
+            <div class="progress-text" id="progress-val">第 1 / 32 题</div>
         </div>
-        <div id="question-area"></div>
+        
+        <div id="question-area">
+            </div>
     </div>
 
     <div id="result">
-        <div class="result-badge"></div>
-        <p style="font-size: 14px; color: #95a5a6; margin-bottom: 0;">你的导师类型是</p>
+        <p style="font-size: 14px; color: #95a5a6; margin-bottom: 0;">您的导师属于</p>
         <div class="type-code" id="res-code"></div>
         <div class="type-name" id="res-name"></div>
         
-        <div class="stats-container" id="res-stats"></div>
+        <div class="stats-container" id="res-stats">
+            </div>
 
         <div class="type-desc" id="res-desc"></div>
-        <button class="btn-retry" onclick="location.reload()">再测一次</button>
-        <p class="footer">© 2024 Academic-MBTI Original<br>未经授权禁止转载题目逻辑或文案</p>
+        <button class="btn-retry" id="retry-btn">再测一次</button>
+        <p class="footer">© 2024 Academic-MBTI Original<br>请尊重原创，转发请注明出处</p>
     </div>
 </div>
 
 <script>
-// 完整题库数据
+// --- 1. 配置与数据 ---
+const STORAGE_KEY = 'advisor_quiz_progress';
+const QUESTIONS_PER_DIM = 8; 
+const THRESHOLD = 3.2; // 赋分阈值整改：平均分需超过3.2才判定为高位
+
 const questions = [
     {q: "1. 导师对你论文初稿的修改意见是否能细致到标点符号、图表格式？", d: "A"},
     {q: "2. 导师是否能清晰记得你上周实验的具体进展或具体数据？", d: "A"},
@@ -187,96 +142,136 @@ const questions = [
     {q: "32. 导师对于组内规矩、权力边界的界定是否清晰透明，没有所谓的“潜规则”？", d: "D"}
 ];
 
-// 分类文案库
 const resultLib = {
-    "AEGD": { name: "学术活菩萨", desc: "【顶配导师】 既给你搬砖的钱，又教你砌墙的技术。他署名慷慨，说话直球，组内基本都是硕转博的“回头客”。在他手下，你只需要努力，剩下的他都会帮你搞定。" },
-    "AEGS": { name: "温柔陷阱师", desc: "【高情商掌控者】 态度极好，甚至会帮你改标点符号，但他说话极其委婉。当他微笑着说“要不你再调研一下”时，其实是在否定你的方案。在他组里，你需要极强的“听力”来拆解潜台词。" },
-    "AELD": { name: "清贫老学究", desc: "【学术纯粹主义】 没钱发补助，实验室椅子可能都是坏的，但他会亲自带你做实验。他虽然严苛但很有原则，不抢成果。适合对学术有真爱、能忍受物质清贫的同学。" },
-    "AELS": { name: "儒雅苦行僧", desc: "【理想主义隐士】 沟通像打禅机，不社交不接活，组内资源极度匮乏。他虽然关心你，但能给你的帮助仅限于学术讨论。在他组里，你需要自己解决就业和生活费。" },
-    "ARGD": { name: "硬核学术暴君", desc: "【高压产出机】 资源顶级，署名公平，但脾气暴躁。凌晨三点发微信，组会像审讯。只要你能扛住精神压力，他能把你送上学术巅峰，是“学术特种兵”的首选。" },
-    "ARGS": { name: "冷面笑虎", desc: "【PUA 高级玩家】 给你钱和平台，但说话永远绕弯子，通过贬低来“激励”学生。他可能在署名上比较强势，让你时刻处于自我怀疑中。在他手下，记得建立心理防线。" },
-    "ARLD": { name: "严苛包工头", desc: "【苦力收割者】 没钱没资源却管得极细。他把学生当成廉价劳动力，毕业标准不仅高而且模糊。这是最容易产生冲突的类型，建议保持最低限度沟通，保命毕业。" },
-    "ARLS": { name: "阴阳剪刀手", desc: "【精神消耗器】 经常失踪，一出现就拿着剪刀（红笔）把你的论文剪得稀碎。说话极其阴阳怪气，不给补助还嫌你干活慢。这是读研路上最需要防备的“深坑”。" },
-    "IEGD": { name: "开明金主爸爸", desc: "【最佳就业导师】 学术上完全不管，但他有资源、有项目、发钱爽快，且支持你出去实习。只要你不嫌弃他没指导，他就是你进入职场最强有力的跳板。" },
-    "IEGS": { name: "随缘大善人", desc: "【佛系放生者】 实验室基本处于“无政府状态”。他不催进度、不抢成果，甚至忘了你是谁。适合自律性极强、且想利用研究生身份考公或跨界发展的奇才。" },
-    "IELD": { name: "无为而治者", desc: "【学术透明人】 没指导也没钱，既不给你制造麻烦也不给你提供帮助。这种“双盲”状态下，你必须具备极强的自救能力，甚至要自己去联系外导。" },
-    "IELS": { name: "隐身世外高人", desc: "【神秘挂名符】 偶尔在群里转发个链接，说话高深莫测。他可能在校外有极高头衔，但对你毫无实际支撑。在他组里，你就是个拥有“名师子弟”头衔的独行侠。" },
-    "IRGD": { name: "失踪的 CEO", desc: "【外包项目经理】 只有在要报表（实验结果）时才闪现。他把你当成项目外包人员，语气生硬直接。虽然没有温情，但只要干活，钱和毕业一般不会亏待你。" },
-    "IRGS": { name: "隐形收割机", desc: "【成果掠夺者】 平时找不到人，发论文时突然出现要求一作或通讯。他说话云山雾罩，实际上是在模糊权责。在他手下，必须保留好沟通证据，保护自己的劳动成果。" },
-    "IRLD": { name: "学术房东", desc: "【挂名包租公】 没指导、没钱、没资源。他只提供一个工位（收房租），毕业时还要你交出一份高质量答卷。这是典型的“零投入高回报”导师，学生自救难度极大。" },
-    "IRLS": { name: "深渊监考官", desc: "【负能量黑洞】 无法提供有效指导，偶尔“指导”就是为了质疑你的智商和进度。不给任何资源却要求你做出顶级成果。遇到这种导师，请尽早寻找副导师或校外支援。" }
+    "AEGD": { name: "学术活菩萨", desc: "【顶配导师】 既给你搬砖的钱，又教你砌墙的技术。他署名慷慨，说话直球，组内基本都是硕转博的“回头客”。" },
+    "AEGS": { name: "温柔陷阱师", desc: "【高情商掌控者】 态度极好，甚至会帮你改标点符号，但他说话极其委婉。当他微笑着说“要不你再调研一下”时，其实是在否定你的方案。" },
+    "AELD": { name: "清贫老学究", desc: "【学术纯粹主义】 没钱发补助，但会亲自带你做实验。他虽然严苛但很有原则，不抢成果。" },
+    "AELS": { name: "儒雅苦行僧", desc: "【理想主义隐士】 沟通像打禅机，不社交不接活，组内资源极度匮乏。他能给你的帮助仅限于学术讨论。" },
+    "ARGD": { name: "硬核学术暴君", desc: "【高压产出机】 资源顶级，署名公平，但脾气暴躁。只要你能扛住精神压力，他能把你送上学术巅峰。" },
+    "ARGS": { name: "冷面笑虎", desc: "【PUA 高级玩家】 给你钱和平台，但说话永远绕弯子，通过贬低来“激励”学生。" },
+    "ARLD": { name: "严苛包工头", desc: "【苦力收割者】 没钱没资源却管得极细。他把学生当成廉价劳动力，毕业标准不仅高而且模糊。" },
+    "ARLS": { name: "阴阳剪刀手", desc: "【精神消耗器】 经常失踪，一出现就拿着剪刀把你的论文剪得稀碎。说话极其阴阳怪气。" },
+    "IEGD": { name: "开明金主爸爸", desc: "【最佳就业导师】 学术上基本放羊，但他有资源、发钱爽快，且支持你出去实习。" },
+    "IEGS": { name: "随缘大善人", desc: "【佛系放生者】 实验室基本处于“无政府状态”。他不催进度、不抢成果。适合想考公或跨界发展的奇才。" },
+    "IELD": { name: "无为而治者", desc: "【学术透明人】 没指导也没钱，既不给你制造麻烦也不给你提供帮助。全靠学生自救。" },
+    "IELS": { name: "隐身世外高人", desc: "【神秘挂名符】 偶尔在群里转发链接。他可能在校外有极高头衔，但对你毫无实际支撑。" },
+    "IRGD": { name: "失踪的 CEO", desc: "【外包项目经理】 只有在要报表时才闪现。只要干活，钱和毕业一般不会亏待你。" },
+    "IRGS": { name: "隐形收割机", desc: "【成果掠夺者】 平时找不到人，发论文时突然要求一作。他说话云山雾罩，实际上是在模糊权责。" },
+    "IRLD": { name: "学术房东", desc: "【挂名包租公】 没指导、没钱、没资源。他只提供一个工位，毕业时还要你交出高质量答卷。" },
+    "IRLS": { name: "深渊监考官", desc: "【负能量黑洞】 无法提供有效指导，只会质疑你的智商和进度。不给资源却要求顶级成果。" }
 };
 
+// --- 2. 逻辑核心 ---
 let currentIdx = 0;
 let scores = { A: 0, E: 0, G: 0, D: 0 };
 
+function init() {
+    loadState();
+    renderQuestion();
+    document.getElementById('retry-btn').addEventListener('click', resetQuiz);
+}
+
 function renderQuestion() {
     const q = questions[currentIdx];
-    const container = document.getElementById('question-area');
-    container.innerHTML = `
+    const area = document.getElementById('question-area');
+    area.innerHTML = `
         <div class="question-card active">
             <h2>${q.q}</h2>
             <div class="options">
-                <button class="opt-btn" onclick="next(5)">🔥 非常符合</button>
-                <button class="opt-btn" onclick="next(4)">👍 比较符合</button>
-                <button class="opt-btn" onclick="next(3)">😐 一般 / 看情况</button>
-                <button class="opt-btn" onclick="next(2)">👎 比较不符合</button>
-                <button class="opt-btn" onclick="next(1)">❌ 完全不符合</button>
+                <button class="opt-btn" onclick="handleNext(5)">🔥 非常符合</button>
+                <button class="opt-btn" onclick="handleNext(4)">👍 比较符合</button>
+                <button class="opt-btn" onclick="handleNext(3)">😐 一般 / 看情况</button>
+                <button class="opt-btn" onclick="handleNext(2)">👎 比较不符合</button>
+                <button class="opt-btn" onclick="handleNext(1)">❌ 完全不符合</button>
             </div>
         </div>
     `;
-    updateProgress();
+    updateProgressUI();
 }
 
-function updateProgress() {
-    const p = ((currentIdx) / questions.length) * 100;
-    document.getElementById('progress').style.width = p + '%';
-    document.getElementById('progress-val').innerText = `已完成进度：${Math.round(p)}%`;
-}
-
-function next(val) {
+function handleNext(val) {
     const dim = questions[currentIdx].d;
     scores[dim] += val;
     
     if (currentIdx < questions.length - 1) {
         currentIdx++;
+        saveState();
         renderQuestion();
     } else {
+        clearState();
         showResult();
     }
+}
+
+function updateProgressUI() {
+    const total = questions.length;
+    const current = currentIdx + 1;
+    const pct = (currentIdx / total) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('progress-val').innerText = `第 ${current} / ${total} 题`;
 }
 
 function showResult() {
     document.getElementById('quiz-ui').style.display = 'none';
     
-    const code = (scores.A >= 24 ? 'A' : 'I') + 
-                 (scores.E >= 24 ? 'E' : 'R') + 
-                 (scores.G >= 24 ? 'G' : 'L') + 
-                 (scores.D >= 24 ? 'D' : 'S');
+    // 赋分整改逻辑：平均分判定
+    const code = 
+        (scores.A / QUESTIONS_PER_DIM > THRESHOLD ? 'A' : 'I') +
+        (scores.E / QUESTIONS_PER_DIM > THRESHOLD ? 'E' : 'R') +
+        (scores.G / QUESTIONS_PER_DIM > THRESHOLD ? 'G' : 'L') +
+        (scores.D / QUESTIONS_PER_DIM > THRESHOLD ? 'D' : 'S');
     
-    const res = resultLib[code];
+    const res = resultLib[code] || resultLib["IELD"];
     document.getElementById('res-code').innerText = code;
     document.getElementById('res-name').innerText = res.name;
     document.getElementById('res-desc').innerText = res.desc;
 
-    const statsHtml = `
-        <div class="stat-item"><span class="stat-emoji">${scores.A >= 24 ? '📚' : '🍃'}</span>学术: ${scores.A >= 24 ? '高' : '低'}</div>
-        <div class="stat-item"><span class="stat-emoji">${scores.E >= 24 ? '❤️' : '🗿'}</span>情感: ${scores.E >= 24 ? '暖' : '冷'}</div>
-        <div class="stat-item"><span class="stat-emoji">${scores.G >= 24 ? '💰' : '📦'}</span>资源: ${scores.G >= 24 ? '壕' : '紧'}</div>
-        <div class="stat-item"><span class="stat-emoji">${scores.D >= 24 ? '💬' : '🌫️'}</span>沟通: ${scores.D >= 24 ? '直' : '绕'}</div>
-    `;
-    document.getElementById('res-stats').innerHTML = statsHtml;
+    // 渲染能量柱 (1-5分映射到 0-100%)
+    const dims = [
+        { label: '学术参与', key: 'A', icon: '📚' },
+        { label: '情感支持', key: 'E', icon: '❤️' },
+        { label: '资源获取', key: 'G', icon: '💰' },
+        { label: '沟通清晰', key: 'D', icon: '💬' }
+    ];
     
-    document.getElementById('result').style.display = 'block';
-    window.scrollTo(0, 0);
+    document.getElementById('res-stats').innerHTML = dims.map(d => {
+        const avg = scores[d.key] / QUESTIONS_PER_DIM;
+        const pct = Math.round(((avg - 1) / 4) * 100); // 最小1分(0%), 最大5分(100%)
+        return `
+            <div class="stat-row">
+                <div class="stat-label"><span>${d.icon} ${d.label}</span><span>${pct}%</span></div>
+                <div class="stat-track"><div class="stat-bar" style="width: ${pct}%"></div></div>
+            </div>
+        `;
+    }).join('');
 
-    // 域名校验（防盗链逻辑）
-    if (!window.location.hostname.includes("github.io") && !window.location.hostname.includes("localhost")) {
-        console.warn("Unauthorized domain.");
-    }
+    document.getElementById('result').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-renderQuestion();
+// --- 3. 辅助功能 ---
+function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentIdx, scores }));
+}
+
+function loadState() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    try {
+        const data = JSON.parse(raw);
+        currentIdx = data.currentIdx || 0;
+        scores = data.scores || { A: 0, E: 0, G: 0, D: 0 };
+    } catch (e) {}
+}
+
+function clearState() { localStorage.removeItem(STORAGE_KEY); }
+
+function resetQuiz() {
+    clearState();
+    location.reload();
+}
+
+init();
 </script>
 </body>
 </html>
