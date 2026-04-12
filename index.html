@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>学术MBTI：测测你的导师属于哪一类？</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; --text: #333; }
+        body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        #app { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); max-width: 500px; width: 90%; margin: 20px auto; }
+        .progress-container { margin-bottom: 25px; }
+        .progress-bar { height: 6px; background: #eee; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.3s; }
+        .progress-text { font-size: 12px; color: #888; margin-top: 8px; text-align: right; }
+        .question-card { display: none; }
+        .question-card.active { display: block; animation: fadeIn 0.4s; }
+        h2 { font-size: 1.15rem; line-height: 1.6; margin-bottom: 30px; min-height: 60px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .opt-btn { background: #fff; border: 1.5px solid #e0e0e0; padding: 14px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-size: 14px; text-align: left; }
+        .opt-btn:hover { border-color: var(--accent); background: #f0f7ff; }
+        #result { display: none; text-align: center; }
+        .type-code { font-size: 3rem; color: var(--accent); font-weight: bold; margin: 10px 0; letter-spacing: 2px; }
+        .type-name { font-size: 1.5rem; color: var(--primary); margin-bottom: 15px; }
+        .type-desc { font-size: 14px; line-height: 1.7; color: #666; text-align: left; background: #f9f9f9; padding: 15px; border-radius: 10px; border-left: 4px solid var(--accent); }
+        .btn-retry { margin-top: 25px; background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .footer { font-size: 10px; color: #ccc; margin-top: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div id="quiz-ui">
+        <div class="progress-container">
+            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+            <div class="progress-text" id="progress-val">1 / 32</div>
+        </div>
+        <div id="question-area"></div>
+    </div>
+
+    <div id="result">
+        <p style="font-size: 14px; color: #888; margin-bottom: 5px;">测试完成，你的导师类型是</p>
+        <div class="type-code" id="res-code"></div>
+        <div class="type-name" id="res-name"></div>
+        <div class="type-desc" id="res-desc"></div>
+        <button class="btn-retry" onclick="location.reload()">重新测试</button>
+        <p class="footer">本测试结果仅供参考，不作为法律依据或学术评价建议</p>
+    </div>
+</div>
+
+<script>
+// 完整题库数据 [cite: 5-12, 15-22, 25-32, 35-42]
+const questions = [
+    {q: "1. 导师对你论文初稿的修改意见是否能细致到标点符号、图表格式？", d: "A"},
+    {q: "2. 导师是否能清晰记得你上周实验的具体进展或具体数据？", d: "A"},
+    {q: "3. 你和导师进行学术讨论或进度汇报的频率（含微信/邮件交互）是否很高？", d: "A"},
+    {q: "4. 导师是否会亲自帮你推导公式、检查实验代码或演示实验操作？", d: "A"},
+    {q: "5. 导师对你课题进度的掌控欲和催促程度，是否比你本人还要紧迫？", d: "A"},
+    {q: "6. 在组会上，导师是否会针对你的汇报细节提出深度的技术性追问？", d: "A"},
+    {q: "7. 当你学术卡壳时，导师给出的反馈是具体的实操建议而非宽泛的空话？", d: "A"},
+    {q: "8. 在面对高难度的审稿意见或课题瓶颈时，导师是否会亲自参与回复论证或方案调整？", d: "A"},
+    {q: "9. 当你因身体不适请假或遭遇突发私事时，导师的首要反应是表示关怀而非追问进度？", d: "E"},
+    {q: "10. 导师是否会主动关心你的心理压力、科研焦虑或未来的职业规划？", d: "E"},
+    {q: "11. 在论文署名或成果分配时，导师是否能确保学生的贡献得到公平体现且不抢占成果？", d: "E"},
+    {q: "12. 当你遭遇实验失败情绪低落时，导师是否能有效安抚、共情而非一味施压？", d: "E"},
+    {q: "13. 实验室的日常气氛是否相对轻松，而非等级森严、让学生感到如履薄冰？", d: "E"},
+    {q: "14. 当你提出想尝试大厂实习、考公或跨学科方向时，导师是否持积极支持的态度？", d: "E"},
+    {q: "15. 导师是否从不在公开场合通过贬低、羞辱或“公开处刑”的方式来激励学生？", d: "E"},
+    {q: "16. 导师是否会像长辈一样，在合适时机和你分享一些人生感悟或生活琐事？", d: "E"},
+    {q: "17. 实验室的劳务费和补助水平是否在单位内位居前列，且能准时、足额发放？", d: "G"},
+    {q: "18. 课题组是否经常组织由导师买单的团建聚餐、零食水果或节假日福利？", d: "G"},
+    {q: "19. 申请购买必要的昂贵试剂、尖端设备或计算资源时，导师是否批复爽快？", d: "G"},
+    {q: "20. 导师是否愿意资助并鼓励你参加线下（含异地、出国）的高水平学术会议？", d: "G"},
+    {q: "21. 导师是否经常动用个人人脉、社会资源帮组内学生内推工作或联系深造机会？", d: "G"},
+    {q: "22. 实验室的硬件环境（电脑配置、人体工学椅等）是否舒适大方？", d: "G"},
+    {q: "23. 报销流程在导师这里是否顺畅，不会因为几块钱的打车票或杂费计较半天？", d: "G"},
+    {q: "24. 考虑到导师提供的平台和资源，组内/校内学生是否普遍认为留校深造是一个极具竞争力的选择？", d: "G"},
+    {q: "25. 导师对你的工作不满意时，是否会心平气和告知具体原因而非让你回家“自悟”？", d: "D"},
+    {q: "26. 导师的微信/邮件回复是否简单明确（如“收到”、“不行”），从不让你猜测意图？", d: "D"},
+    {q: "27. 当导师说“你可以再改改”时，你是否确信这只是建议而非带强制性的命令？", d: "D"},
+    {q: "28. 导师是否从不在背地里通过其他同门，向你传达对你的负面评价或不满？", d: "D"},
+    {q: "29. 毕业的标准（如论文篇数）是否在入学初期就明确，且不会随时间随意加码？", d: "D"},
+    {q: "30. 导师的情绪是否相对稳定，不会因为个人压力或私事而突然迁怒于学生？", d: "D"},
+    {q: "31. 你是否能随时（或在约定时间内）直接走进办公室讨论问题，无需复杂的心理建设？", d: "D"},
+    {q: "32. 导师对于组内规矩、权力边界的界定是否清晰透明，没有所谓的“潜规则”？", d: "D"}
+];
+
+// 分类文案库 [cite: 45, 47]
+const resultLib = {
+    "AEGD": { name: "学术活菩萨", desc: "【顶配导师】 既给你搬砖的钱，又教你砌墙的技术。他署名慷慨，说话直球，组内基本都是硕转博的“回头客”。在他手下，你只需要努力，剩下的他都会帮你搞定。" },
+    "AEGS": { name: "温柔陷阱师", desc: "【高情商掌控者】 态度极好，甚至会帮你改标点符号，但他说话极其委婉。当他微笑着说“要不你再调研一下”时，其实是在否定你的方案。在他组里，你需要极强的“听力”来拆解潜台词。" },
+    "AELD": { name: "清贫老学究", desc: "【学术纯粹主义】 没钱发补助，实验室椅子可能都是坏的，但他会亲自带你做实验。他虽然严苛但很有原则，不抢成果。适合对学术有真爱、能忍受物质清贫的同学。" },
+    "AELS": { name: "儒雅苦行僧", desc: "【理想主义隐士】 沟通像打禅机，不社交不接活，组内资源极度匮乏。他虽然关心你，但能给你的帮助仅限于学术讨论。在他组里，你需要自己解决就业和生活费。" },
+    "ARGD": { name: "硬核学术暴君", desc: "【高压产出机】 资源顶级，署名公平，但脾气暴躁。凌晨三点发微信，组会像审讯。只要你能扛住精神压力，他能把你送上学术巅峰，是“学术特种兵”的首选。" },
+    "ARGS": { name: "冷面笑虎", desc: "【PUA 高级玩家】 给你钱和平台，但说话永远绕弯子，通过贬低来“激励”学生。他可能在署名上比较强势，让你时刻处于自我怀疑中。在他手下，记得建立心理防线。" },
+    "ARLD": { name: "严苛包工头", desc: "【苦力收割者】 没钱没资源却管得极细。他把学生当成廉价劳动力，毕业标准不仅高而且模糊。这是最容易产生冲突的类型，建议保持最低限度沟通，保命毕业。" },
+    "ARLS": { name: "阴阳剪刀手", desc: "【精神消耗器】 经常失踪，一出现就拿着剪刀（红笔）把你的论文剪得稀碎。说话极其阴阳怪气，不给补助还嫌你干活慢。这是读研路上最需要防备的“深坑”。" },
+    "IEGD": { name: "开明金主爸爸", desc: "【最佳就业导师】 学术上完全不管，但他有资源、有项目、发钱爽快，且支持你出去实习。只要你不嫌弃他没指导，他就是你进入职场最强有力的跳板。" },
+    "IEGS": { name: "随缘大善人", desc: "【佛系放生者】 实验室基本处于“无政府状态”。他不催进度、不抢成果，甚至忘了你是谁。适合自律性极强、且想利用研究生身份考公或跨界发展的奇才。" },
+    "IELD": { name: "无为而治者", desc: "【学术透明人】 没指导也没钱，既不给你制造麻烦也不给你提供帮助。这种“双盲”状态下，你必须具备极强的自救能力，甚至要自己去联系外导。" },
+    "IELS": { name: "隐身世外高人", desc: "【神秘挂名符】 偶尔在群里转发个链接，说话高深莫测。他可能在校外有极高头衔，但对你毫无实际支撑。在他组里，你就是个拥有“名师子弟”头衔的独行侠。" },
+    "IRGD": { name: "失踪的 CEO", desc: "【外包项目经理】 只有在要报表（实验结果）时才闪现。他把你当成项目外包人员，语气生硬直接。虽然没有温情，但只要干活，钱和毕业一般不会亏待你。" },
+    "IRGS": { name: "隐形收割机", desc: "【成果掠夺者】 平时找不到人，发论文时突然出现要求一作或通讯。他说话云山雾罩，实际上是在模糊权责。在他手下，必须保留好沟通证据，保护自己的劳动成果。" },
+    "IRLD": { name: "学术房东", desc: "【挂名包租公】 没指导、没钱、没资源。他只提供一个工位（收房租），毕业时还要你交出一份高质量答卷。这是典型的“零投入高回报”导师，学生自救难度极大。" },
+    "IRLS": { name: "深渊监考官", desc: "【负能量黑洞】 无法提供有效指导，偶尔“指导”就是为了质疑你的智商和进度。不给任何资源却要求你做出顶级成果。遇到这种导师，请尽早寻找副导师或校外支援。" }
+};
+
+let currentIdx = 0;
+let scores = { A: 0, E: 0, G: 0, D: 0 };
+
+function renderQuestion() {
+    const q = questions[currentIdx];
+    const container = document.getElementById('question-area');
+    container.innerHTML = `
+        <div class="question-card active">
+            <h2>${q.q}</h2>
+            <div class="options">
+                <button class="opt-btn" onclick="next(5)">非常符合 (5分)</button>
+                <button class="opt-btn" onclick="next(4)">比较符合 (4分)</button>
+                <button class="opt-btn" onclick="next(3)">一般 / 看情况 (3分)</button>
+                <button class="opt-btn" onclick="next(2)">比较不符合 (2分)</button>
+                <button class="opt-btn" onclick="next(1)">完全不符合 (1分)</button>
+            </div>
+        </div>
+    `;
+    updateProgress();
+}
+
+function updateProgress() {
+    const p = ((currentIdx) / questions.length) * 100;
+    document.getElementById('progress').style.width = p + '%';
+    document.getElementById('progress-val').innerText = `${currentIdx + 1} / ${questions.length}`;
+}
+
+function next(val) {
+    const dim = questions[currentIdx].d;
+    scores[dim] += val;
+    
+    if (currentIdx < questions.length - 1) {
+        currentIdx++;
+        renderQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById('quiz-ui').style.display = 'none';
+    
+    // 判定逻辑：每维度8题，满分40，中性点24分 [cite: 3, 13, 23, 33]
+    const code = (scores.A >= 24 ? 'A' : 'I') + 
+                 (scores.E >= 24 ? 'E' : 'R') + 
+                 (scores.G >= 24 ? 'G' : 'L') + 
+                 (scores.D >= 24 ? 'D' : 'S');
+    
+    const res = resultLib[code];
+    document.getElementById('res-code').innerText = code;
+    document.getElementById('res-name').innerText = res.name;
+    document.getElementById('res-desc').innerText = res.desc;
+    document.getElementById('result').style.display = 'block';
+}
+
+renderQuestion();
+</script>
+</body>
+</html>
