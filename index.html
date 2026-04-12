@@ -1,277 +1,1088 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>学术MBTI：测测你的导师属于哪一类？ | Original</title>
-    <meta name="description" content="32题深度解析你的导师风格，测测他是学术活菩萨还是深渊监考官。">
-    
-    <style>
-        :root { 
-            --primary: #2c3e50; --accent: #3498db; --success: #2ecc71;
-            --bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); --text: #2c3e50; 
-        }
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title>学术MBTI：测测你的导师属于哪一类？</title>
+  <meta
+    name="description"
+    content="32题解析你的导师风格，测测他是学术活菩萨、硬核学术暴君，还是深渊监考官。"
+  />
+  <meta name="theme-color" content="#4f8fd9" />
+  <meta property="og:title" content="学术MBTI：测测你的导师属于哪一类？" />
+  <meta
+    property="og:description"
+    content="32题解析你的导师风格，看看你的导师到底属于哪一类。"
+  />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="./favicon.ico" />
 
-        body { 
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
-            background: var(--bg); color: var(--text); margin: 0; 
-            display: flex; justify-content: center; align-items: center; 
-            min-height: 100vh; -webkit-tap-highlight-color: transparent;
-            user-select: none; -webkit-user-select: none;
-            padding: env(safe-area-inset-top) 15px env(safe-area-inset-bottom);
-        }
+  <style>
+    :root {
+      --primary: #263548;
+      --primary-2: #33465f;
+      --accent: #4f8fd9;
+      --accent-2: #6fb1ff;
+      --success: #62c98a;
+      --bg1: #eef3fb;
+      --bg2: #dfe8f6;
+      --card: rgba(255, 255, 255, 0.84);
+      --line: rgba(38, 53, 72, 0.08);
+      --soft-text: #6b7b8d;
+      --shadow: 0 20px 60px rgba(42, 67, 102, 0.12);
+      --shadow-soft: 0 10px 24px rgba(42, 67, 102, 0.08);
 
-        #app { 
-            background: rgba(255, 255, 255, 0.92); padding: 40px 30px; 
-            border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); 
-            max-width: 480px; width: 100%; backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
+      --c-a: #4f8fd9;
+      --c-e: #e37ea7;
+      --c-g: #d7a648;
+      --c-d: #8e7ce6;
+    }
 
-        /* 计数器 */
-        .counter-box { font-size: 11px; color: #95a5a6; margin-bottom: 15px; display: flex; align-items: center; gap: 5px; }
-        .counter-box img { height: 16px; filter: grayscale(1) opacity(0.6); }
+    * {
+      box-sizing: border-box;
+    }
 
-        /* 进度条：统一显示第 X / 32 题 */
-        .progress-container { margin-bottom: 35px; }
-        .progress-bar { height: 6px; background: rgba(0,0,0,0.05); border-radius: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); width: 0%; transition: width 0.3s ease; }
-        .progress-text { font-size: 13px; color: #7f8c8d; margin-top: 10px; font-weight: 600; }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        h2 { font-size: clamp(1.1rem, 4vw, 1.25rem); line-height: 1.6; margin-bottom: 30px; min-height: 60px; color: var(--primary); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      color: var(--primary);
+      background:
+        radial-gradient(circle at top left, rgba(111, 177, 255, 0.22), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(98, 201, 138, 0.16), transparent 28%),
+        linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(18px, env(safe-area-inset-bottom));
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        .options { display: flex; flex-direction: column; gap: 12px; }
-        .opt-btn { 
-            background: white; border: 1px solid rgba(0,0,0,0.08); 
-            padding: 16px 20px; border-radius: 14px; cursor: pointer; 
-            transition: all 0.2s ease; font-size: 15px; text-align: left;
-            font-weight: 500; color: #444;
-        }
-        .opt-btn:hover { border-color: var(--accent); background: #f8fbff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.1); }
-        .opt-btn:active { transform: scale(0.98); }
+    .app {
+      width: min(100%, 560px);
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      overflow: hidden;
+      position: relative;
+    }
 
-        /* 结果页 */
-        #result { display: none; text-align: center; animation: fadeIn 0.6s ease; }
-        .type-code { font-size: 3.5rem; color: var(--accent); font-weight: 800; margin: 5px 0; }
-        .type-name { font-size: 1.6rem; color: var(--primary); margin-bottom: 20px; font-weight: 700; }
-        
-        /* 能量条样式 */
-        .stats-container { margin: 25px 0; background: #fdfdfd; padding: 20px; border-radius: 15px; }
-        .stat-row { margin-bottom: 12px; }
-        .stat-label { display: flex; justify-content: space-between; font-size: 12px; color: #7f8c8d; margin-bottom: 5px; }
-        .stat-track { height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
-        .stat-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 1s ease-out; }
+    .app::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.24) 0%,
+        rgba(255,255,255,0) 28%
+      );
+    }
 
-        .type-desc { font-size: 14px; line-height: 1.8; color: #555; text-align: left; background: rgba(52, 152, 219, 0.05); padding: 20px; border-radius: 15px; border-left: 5px solid var(--accent); margin-bottom: 30px; }
-        .btn-retry { background: var(--primary); color: white; border: none; padding: 14px 40px; border-radius: 30px; cursor: pointer; font-size: 16px; font-weight: 600; }
+    .inner {
+      position: relative;
+      padding: 24px 22px 22px;
+    }
 
-        .footer { font-size: 11px; color: #bdc3c7; margin-top: 40px; text-align: center; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(79, 143, 217, 0.09);
+      border: 1px solid rgba(79, 143, 217, 0.12);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--success));
+      box-shadow: 0 0 12px rgba(79, 143, 217, 0.38);
+      flex: 0 0 auto;
+    }
+
+    .mini-note {
+      font-size: 12px;
+      color: var(--soft-text);
+      white-space: nowrap;
+    }
+
+    .progress-wrap {
+      margin-bottom: 22px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .progress-text,
+    .progress-done {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--soft-text);
+    }
+
+    .progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(38, 53, 72, 0.06);
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--success));
+      transition: width 0.35s ease;
+      box-shadow: 0 0 14px rgba(79, 143, 217, 0.28);
+    }
+
+    .question-card {
+      background: rgba(255,255,255,0.62);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px 18px 18px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .question-index {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.3px;
+      margin-bottom: 10px;
+    }
+
+    .question-title {
+      margin: 0 0 18px;
+      font-size: clamp(1.1rem, 4vw, 1.32rem);
+      line-height: 1.65;
+      color: var(--primary);
+      min-height: 96px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .opt-btn {
+      width: 100%;
+      border: 1px solid rgba(38, 53, 72, 0.08);
+      background: rgba(255,255,255,0.92);
+      color: #3a4b5f;
+      border-radius: 16px;
+      padding: 16px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .opt-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(79, 143, 217, 0.28);
+      background: #fbfdff;
+      box-shadow: 0 10px 24px rgba(79, 143, 217, 0.10);
+    }
+
+    .opt-btn:active {
+      transform: scale(0.985);
+    }
+
+    .opt-btn.is-selected {
+      border-color: rgba(79, 143, 217, 0.38);
+      background: linear-gradient(180deg, rgba(79, 143, 217, 0.10), rgba(79, 143, 217, 0.04));
+      box-shadow: 0 10px 22px rgba(79, 143, 217, 0.12);
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .helper-text {
+      font-size: 12px;
+      color: var(--soft-text);
+      line-height: 1.5;
+    }
+
+    .btn-ghost {
+      border: 1px solid rgba(38, 53, 72, 0.10);
+      background: rgba(255,255,255,0.72);
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .btn-ghost:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* Result */
+    #result {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .result-head {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .result-kicker {
+      margin: 0 0 8px;
+      color: #8593a4;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .result-badge {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 14px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(79, 143, 217, 0.18), rgba(98, 201, 138, 0.18));
+      border: 1px solid rgba(79, 143, 217, 0.12);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 28px rgba(79, 143, 217, 0.12);
+    }
+
+    .result-badge span {
+      font-size: 32px;
+    }
+
+    .type-code {
+      margin: 0;
+      font-size: clamp(3.2rem, 13vw, 5.2rem);
+      line-height: 1;
+      letter-spacing: -1.5px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .type-name {
+      margin: 10px 0 8px;
+      font-size: clamp(1.45rem, 5vw, 2rem);
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .result-subtitle {
+      margin: 0 auto;
+      max-width: 420px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--soft-text);
+    }
+
+    .stats-container {
+      margin: 18px 0 18px;
+      background: rgba(255,255,255,0.68);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px 16px 8px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stat-row {
+      margin-bottom: 14px;
+    }
+
+    .stat-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #566578;
+      font-weight: 700;
+    }
+
+    .stat-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-track {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(38, 53, 72, 0.06);
+      overflow: hidden;
+    }
+
+    .stat-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 999px;
+      transition: width 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 0 8px rgba(255,255,255,0.18);
+    }
+
+    .type-desc {
+      position: relative;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(79, 143, 217, 0.10);
+      border-radius: 20px;
+      padding: 18px 18px 18px 22px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .type-desc::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 14px;
+      bottom: 14px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    }
+
+    .type-desc p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.95;
+      color: #4d5c6d;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+      min-width: 132px;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary-2), var(--primary));
+      box-shadow: 0 12px 26px rgba(44, 62, 80, 0.18);
+    }
+
+    .btn-secondary {
+      color: var(--primary);
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(38, 53, 72, 0.10);
+      box-shadow: 0 8px 20px rgba(44, 62, 80, 0.06);
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active,
+    .btn-secondary:active {
+      transform: translateY(0);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 12px;
+      color: #95a2b1;
+      line-height: 1.75;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(18px);
+      background: rgba(38, 53, 72, 0.92);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.16);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.24s ease, transform 0.24s ease;
+      z-index: 999;
+      max-width: calc(100vw - 32px);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    .opt-btn:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible,
+    .btn-ghost:focus-visible {
+      outline: 3px solid rgba(79, 143, 217, 0.28);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 560px) {
+      .inner {
+        padding: 20px 16px 18px;
+      }
+
+      .question-card {
+        padding: 18px 14px 14px;
+        border-radius: 22px;
+      }
+
+      .question-title {
+        min-height: auto;
+      }
+
+      .quiz-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .helper-text {
+        order: 2;
+      }
+
+      .btn-ghost {
+        width: 100%;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        flex: 1 1 100%;
+        width: 100%;
+      }
+
+      .action-row {
+        flex-direction: column;
+      }
+
+      .mini-note {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
-<body oncontextmenu="return false;">
-
-<div id="app">
-    <div id="quiz-ui">
-        <div class="counter-box">
-            已有 <img src="https://count.getloli.com/get/@academic-mbti-original?theme=asoul" alt="count"> 位同门参与测试
+<body>
+  <main class="app" role="main">
+    <div class="inner">
+      <section id="quiz-ui" aria-label="测试题目区域">
+        <div class="topbar">
+          <div class="brand">
+            <span class="brand-dot"></span>
+            <span>Academic MBTI</span>
+          </div>
+          <div class="mini-note">轻松测试 · 仅供参考</div>
         </div>
 
-        <div class="progress-container">
-            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        <div class="progress-wrap">
+          <div class="progress-meta">
             <div class="progress-text" id="progress-val">第 1 / 32 题</div>
+            <div class="progress-done" id="progress-done">已完成 0 / 32</div>
+          </div>
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="progress"></div>
+          </div>
         </div>
-        
-        <div id="question-area">
-            </div>
-    </div>
 
-    <div id="result">
-        <p style="font-size: 14px; color: #95a5a6; margin-bottom: 0;">您的导师属于</p>
-        <div class="type-code" id="res-code"></div>
-        <div class="type-name" id="res-name"></div>
-        
-        <div class="stats-container" id="res-stats">
-            </div>
+        <div id="question-area"></div>
+      </section>
 
-        <div class="type-desc" id="res-desc"></div>
-        <button class="btn-retry" id="retry-btn">再测一次</button>
-        <p class="footer">© 2026 Academic-MBTI Original@macroecology@163.com <br>请尊重原创，转发请注明出处</p>
-    </div>
-</div>
-
-<script>
-// --- 1. 配置与数据 ---
-const STORAGE_KEY = 'advisor_quiz_progress';
-const QUESTIONS_PER_DIM = 8; 
-const THRESHOLD = 3.2; // 赋分阈值整改：平均分需超过3.2才判定为高位
-
-const questions = [
-    {q: "1. 导师对你论文初稿的修改意见是否能细致到标点符号、图表格式？", d: "A"},
-    {q: "2. 导师是否能清晰记得你上周实验的具体进展或具体数据？", d: "A"},
-    {q: "3. 你和导师进行学术讨论或进度汇报的频率（含微信/邮件交互）是否很高？", d: "A"},
-    {q: "4. 导师是否会亲自帮你推导公式、检查实验代码或演示实验操作？", d: "A"},
-    {q: "5. 导师对你课题进度的掌控欲和催促程度，是否比你本人还要紧迫？", d: "A"},
-    {q: "6. 在组会上，导师是否会针对你的汇报细节提出深度的技术性追问？", d: "A"},
-    {q: "7. 当你学术卡壳时，导师给出的反馈是具体的实操建议而非宽泛的空话？", d: "A"},
-    {q: "8. 在面对高难度的审稿意见或课题瓶颈时，导师是否会亲自参与回复论证或方案调整？", d: "A"},
-    {q: "9. 当你因身体不适请假或遭遇突发私事时，导师的首要反应是表示关怀而非追问进度？", d: "E"},
-    {q: "10. 导师是否会主动关心你的心理压力、科研焦虑或未来的职业规划？", d: "E"},
-    {q: "11. 在论文署名或成果分配时，导师是否能确保学生的贡献得到公平体现且不抢占成果？", d: "E"},
-    {q: "12. 当你遭遇实验失败情绪低落时，导师是否能有效安抚、共情而非一味施压？", d: "E"},
-    {q: "13. 实验室的日常气氛是否相对轻松，而非等级森严、让学生感到如履薄冰？", d: "E"},
-    {q: "14. 当你提出想尝试大厂实习、考公或跨学科方向时，导师是否持积极支持的态度？", d: "E"},
-    {q: "15. 导师从不在公开场合通过贬低、羞辱或“公开处刑”的方式来激励学生？", d: "E"},
-    {q: "16. 导师是否会像长辈一样，在合适时机和你分享一些人生感悟或生活琐事？", d: "E"},
-    {q: "17. 实验室的劳务费和补助水平是否在单位内位居前列，且能准时、足额发放？", d: "G"},
-    {q: "18. 课题组是否经常组织由导师买单的团建聚餐、零食水果或节假日福利？", d: "G"},
-    {q: "19. 申请购买必要的昂贵试剂、尖端设备或计算资源时，导师是否批复爽快？", d: "G"},
-    {q: "20. 导师是否愿意资助并鼓励你参加线下（含异地、出国）的高水平学术会议？", d: "G"},
-    {q: "21. 导师是否经常动用个人人脉、社会资源帮组内学生内推工作或联系深造机会？", d: "G"},
-    {q: "22. 实验室的硬件环境（电脑配置、人体工学椅等）是否舒适大方？", d: "G"},
-    {q: "23. 报销流程在导师这里是否顺畅，不会因为几块钱的打车票或杂费计较半天？", d: "G"},
-    {q: "24. 考虑到导师提供的平台和资源，组内/校内学生是否普遍认为留校深造是一个极具竞争力的选择？", d: "G"},
-    {q: "25. 导师对你的工作不满意时，是否会心平气和告知具体原因而非让你回家“自悟”？", d: "D"},
-    {q: "26. 导师的微信/邮件回复是否简单明确（如“收到”、“不行”），从不让你猜测意图？", d: "D"},
-    {q: "27. 当导师说“你可以再改改”时，你是否确信这只是建议而非带强制性的命令？", d: "D"},
-    {q: "28. 导师是否从不在背地里通过其他同门，向你传达对你的负面评价或不满？", d: "D"},
-    {q: "29. 毕业的标准（如论文篇数）是否在入学初期就明确，且不会随时间随意加码？", d: "D"},
-    {q: "30. 导师的情绪是否相对稳定，不会因为个人压力或私事而突然迁怒于学生？", d: "D"},
-    {q: "31. 你是否能随时（或在约定时间内）直接走进办公室讨论问题，无需复杂的心理建设？", d: "D"},
-    {q: "32. 导师对于组内规矩、权力边界的界定是否清晰透明，没有所谓的“潜规则”？", d: "D"}
-];
-
-const resultLib = {
-    "AEGD": { name: "学术活菩萨", desc: "【顶配导师】 既给你搬砖的钱，又教你砌墙的技术。他署名慷慨，说话直球，组内基本都是硕转博的“回头客”。" },
-    "AEGS": { name: "温柔陷阱师", desc: "【高情商掌控者】 态度极好，甚至会帮你改标点符号，但他说话极其委婉。当他微笑着说“要不你再调研一下”时，其实是在否定你的方案。" },
-    "AELD": { name: "清贫老学究", desc: "【学术纯粹主义】 没钱发补助，但会亲自带你做实验。他虽然严苛但很有原则，不抢成果。" },
-    "AELS": { name: "儒雅苦行僧", desc: "【理想主义隐士】 沟通像打禅机，不社交不接活，组内资源极度匮乏。他能给你的帮助仅限于学术讨论。" },
-    "ARGD": { name: "硬核学术暴君", desc: "【高压产出机】 资源顶级，署名公平，但脾气暴躁。只要你能扛住精神压力，他能把你送上学术巅峰。" },
-    "ARGS": { name: "冷面笑虎", desc: "【PUA 高级玩家】 给你钱和平台，但说话永远绕弯子，通过贬低来“激励”学生。" },
-    "ARLD": { name: "严苛包工头", desc: "【苦力收割者】 没钱没资源却管得极细。他把学生当成廉价劳动力，毕业标准不仅高而且模糊。" },
-    "ARLS": { name: "阴阳剪刀手", desc: "【精神消耗器】 经常失踪，一出现就拿着剪刀把你的论文剪得稀碎。说话极其阴阳怪气。" },
-    "IEGD": { name: "开明金主爸爸", desc: "【最佳就业导师】 学术上基本放羊，但他有资源、发钱爽快，且支持你出去实习。" },
-    "IEGS": { name: "随缘大善人", desc: "【佛系放生者】 实验室基本处于“无政府状态”。他不催进度、不抢成果。适合想考公或跨界发展的奇才。" },
-    "IELD": { name: "无为而治者", desc: "【学术透明人】 没指导也没钱，既不给你制造麻烦也不给你提供帮助。全靠学生自救。" },
-    "IELS": { name: "隐身世外高人", desc: "【神秘挂名符】 偶尔在群里转发链接。他可能在校外有极高头衔，但对你毫无实际支撑。" },
-    "IRGD": { name: "失踪的 CEO", desc: "【外包项目经理】 只有在要报表时才闪现。只要干活，钱和毕业一般不会亏待你。" },
-    "IRGS": { name: "隐形收割机", desc: "【成果掠夺者】 平时找不到人，发论文时突然要求一作。他说话云山雾罩，实际上是在模糊权责。" },
-    "IRLD": { name: "学术房东", desc: "【挂名包租公】 没指导、没钱、没资源。他只提供一个工位，毕业时还要你交出高质量答卷。" },
-    "IRLS": { name: "深渊监考官", desc: "【负能量黑洞】 无法提供有效指导，只会质疑你的智商和进度。不给资源却要求顶级成果。" }
-};
-
-// --- 2. 逻辑核心 ---
-let currentIdx = 0;
-let scores = { A: 0, E: 0, G: 0, D: 0 };
-
-function init() {
-    loadState();
-    renderQuestion();
-    document.getElementById('retry-btn').addEventListener('click', resetQuiz);
-}
-
-function renderQuestion() {
-    const q = questions[currentIdx];
-    const area = document.getElementById('question-area');
-    area.innerHTML = `
-        <div class="question-card active">
-            <h2>${q.q}</h2>
-            <div class="options">
-                <button class="opt-btn" onclick="handleNext(5)">🔥 非常符合</button>
-                <button class="opt-btn" onclick="handleNext(4)">👍 比较符合</button>
-                <button class="opt-btn" onclick="handleNext(3)">😐 一般 / 看情况</button>
-                <button class="opt-btn" onclick="handleNext(2)">👎 比较不符合</button>
-                <button class="opt-btn" onclick="handleNext(1)">❌ 完全不符合</button>
-            </div>
+      <section id="result" aria-live="polite" aria-label="测试结果">
+        <div class="result-head">
+          <div class="result-badge" aria-hidden="true"><span>🎓</span></div>
+          <p class="result-kicker">你的导师属于</p>
+          <h1 class="type-code" id="res-code">AEGD</h1>
+          <div class="type-name" id="res-name">学术活菩萨</div>
+          <p class="result-subtitle" id="res-subtitle"></p>
         </div>
-    `;
-    updateProgressUI();
-}
 
-function handleNext(val) {
-    const dim = questions[currentIdx].d;
-    scores[dim] += val;
-    
-    if (currentIdx < questions.length - 1) {
-        currentIdx++;
+        <div class="stats-container" id="res-stats"></div>
+
+        <div class="type-desc">
+          <p id="res-desc"></p>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-primary" id="retry-btn" type="button">再测一次</button>
+          <button class="btn-secondary" id="copy-btn" type="button">复制结果</button>
+          <button class="btn-secondary" id="share-btn" type="button">分享链接</button>
+        </div>
+
+        <div class="footer">
+          Academic MBTI Original © 2026<br />
+          欢迎分享给同门一起测测
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = "academic_mbti_quiz_v3";
+    const QUESTIONS_PER_DIM = 8;
+    const THRESHOLD = 3.2;
+
+    const questions = [
+      { q: "1. 导师对你论文初稿的修改意见是否能细致到标点符号、图表格式？", d: "A" },
+      { q: "2. 导师是否能清晰记得你上周实验的具体进展或具体数据？", d: "A" },
+      { q: "3. 你和导师进行学术讨论或进度汇报的频率（含微信/邮件交互）是否很高？", d: "A" },
+      { q: "4. 导师是否会亲自帮你推导公式、检查实验代码或演示实验操作？", d: "A" },
+      { q: "5. 导师对你课题进度的掌控欲和催促程度，是否比你本人还要紧迫？", d: "A" },
+      { q: "6. 在组会上，导师是否会针对你的汇报细节提出深度的技术性追问？", d: "A" },
+      { q: "7. 当你学术卡壳时，导师给出的反馈是具体的实操建议而非宽泛的空话？", d: "A" },
+      { q: "8. 在面对高难度的审稿意见或课题瓶颈时，导师是否会亲自参与回复论证或方案调整？", d: "A" },
+
+      { q: "9. 当你因身体不适请假或遭遇突发私事时，导师的首要反应是表示关怀而非追问进度？", d: "E" },
+      { q: "10. 导师是否会主动关心你的心理压力、科研焦虑或未来的职业规划？", d: "E" },
+      { q: "11. 在论文署名或成果分配时，导师是否能确保学生的贡献得到公平体现且不抢占成果？", d: "E" },
+      { q: "12. 当你遭遇实验失败情绪低落时，导师是否能有效安抚、共情而非一味施压？", d: "E" },
+      { q: "13. 实验室的日常气氛是否相对轻松，而非等级森严、让学生感到如履薄冰？", d: "E" },
+      { q: "14. 当你提出想尝试大厂实习、考公或跨学科方向时，导师是否持积极支持的态度？", d: "E" },
+      { q: "15. 导师从不在公开场合通过贬低、羞辱或“公开处刑”的方式来激励学生？", d: "E" },
+      { q: "16. 导师是否会像长辈一样，在合适时机和你分享一些人生感悟或生活琐事？", d: "E" },
+
+      { q: "17. 实验室的劳务费和补助水平是否在单位内位居前列，且能准时、足额发放？", d: "G" },
+      { q: "18. 课题组是否经常组织由导师买单的团建聚餐、零食水果或节假日福利？", d: "G" },
+      { q: "19. 申请购买必要的昂贵试剂、尖端设备或计算资源时，导师是否批复爽快？", d: "G" },
+      { q: "20. 导师是否愿意资助并鼓励你参加线下（含异地、出国）的高水平学术会议？", d: "G" },
+      { q: "21. 导师是否经常动用个人人脉、社会资源帮组内学生内推工作或联系深造机会？", d: "G" },
+      { q: "22. 实验室的硬件环境（电脑配置、人体工学椅等）是否舒适大方？", d: "G" },
+      { q: "23. 报销流程在导师这里是否顺畅，不会因为几块钱的打车票或杂费计较半天？", d: "G" },
+      { q: "24. 考虑到导师提供的平台和资源，组内/校内学生是否普遍认为留校深造是一个极具竞争力的选择？", d: "G" },
+
+      { q: "25. 导师对你的工作不满意时，是否会心平气和告知具体原因而非让你回家“自悟”？", d: "D" },
+      { q: "26. 导师的微信/邮件回复是否简单明确（如“收到”、“不行”），从不让你猜测意图？", d: "D" },
+      { q: "27. 当导师说“你可以再改改”时，你是否确信这只是建议而非带强制性的命令？", d: "D" },
+      { q: "28. 导师是否从不在背地里通过其他同门，向你传达对你的负面评价或不满？", d: "D" },
+      { q: "29. 毕业的标准（如论文篇数）是否在入学初期就明确，且不会随时间随意加码？", d: "D" },
+      { q: "30. 导师的情绪是否相对稳定，不会因为个人压力或私事而突然迁怒于学生？", d: "D" },
+      { q: "31. 你是否能随时（或在约定时间内）直接走进办公室讨论问题，无需复杂的心理建设？", d: "D" },
+      { q: "32. 导师对于组内规矩、权力边界的界定是否清晰透明，没有所谓的“潜规则”？", d: "D" }
+    ];
+
+    const resultLib = {
+      AEGD: {
+        name: "学术活菩萨",
+        desc: "【顶配导师】既给你搬砖的钱，又教你砌墙的技术。他署名慷慨，说话直球，组内基本都是硕转博的“回头客”。在他手下，你只需要认真努力，很多关键节点他都会帮你顶上。"
+      },
+      AEGS: {
+        name: "温柔陷阱师",
+        desc: "【高情商掌控者】态度很好，甚至会帮你改标点和措辞，但他的否定经常包裹在温柔表达里。当他微笑着说“你再想想也行”时，往往已经是在暗示方案不太行。"
+      },
+      AELD: {
+        name: "清贫老学究",
+        desc: "【学术纯粹主义】资源不算充裕，实验室条件可能也不豪华，但他愿意亲自带你啃问题、磨方法、抠细节。适合真心想做学术、且能接受清苦环境的人。"
+      },
+      AELS: {
+        name: "儒雅苦行僧",
+        desc: "【理想主义隐士】学术讨论可以很深入，但资源、人脉、现实支持都比较有限。沟通也偏含蓄，需要你自己有较强的理解力和自我推进能力。"
+      },
+      ARGD: {
+        name: "硬核学术暴君",
+        desc: "【高压产出机】资源、标准、执行力都拉满，公平通常也还在线，但压力值不低。只要你能扛住节奏和情绪强度，他确实有机会把你推上更高平台。"
+      },
+      ARGS: {
+        name: "冷面笑虎",
+        desc: "【PUA 高级玩家】钱和平台可能不差，但说话弯、评价狠、边界模糊，容易让学生长期处于自我怀疑状态。看起来像在培养你，实际可能也在持续消耗你。"
+      },
+      ARLD: {
+        name: "严苛包工头",
+        desc: "【苦力收割者】资源有限，却把控极细，要求多且不一定透明。学生在这种组里最容易陷入“拼命干活但始终不确定终点在哪”的状态。"
+      },
+      ARLS: {
+        name: "阴阳剪刀手",
+        desc: "【精神消耗器】不一定常出现，但一出现就容易把气氛拉到低压模式。不给足资源，却对你持续挑剔，长期相处往往对心态消耗很大。"
+      },
+      IEGD: {
+        name: "开明金主爸爸",
+        desc: "【最佳就业导师】学术上不怎么手把手带，但资源、人脉、项目、经费都还不错，而且往往支持学生去找更适合自己的发展路径。"
+      },
+      IEGS: {
+        name: "随缘大善人",
+        desc: "【佛系放生者】不怎么催、不怎么抢，也不怎么管。对于极度自律、目标明确的人可能是天堂，但对需要明确指导的人来说容易像在自生自灭。"
+      },
+      IELD: {
+        name: "无为而治者",
+        desc: "【学术透明人】没什么情绪压力，也没什么实质支持。既不给你添麻烦，也很难主动托你一把，最后很多事都只能靠自己解决。"
+      },
+      IELS: {
+        name: "隐身世外高人",
+        desc: "【神秘挂名符】存在感不高，风格也偏抽象，偶尔给一点方向，但很难形成稳定支撑。你可能挂着一个不错的名头，实际还是独自摸索为主。"
+      },
+      IRGD: {
+        name: "失踪的 CEO",
+        desc: "【外包项目经理】平时不太露面，需要结果时突然出现。虽然少了温情，但如果组里流程成熟、资源在线，只要干活，很多现实利益通常也不会少。"
+      },
+      IRGS: {
+        name: "隐形收割机",
+        desc: "【成果掠夺者】平时缺席，关键节点却突然主导局面，容易在署名、成果归属、责任边界上让学生吃亏。和这种导师相处，保留记录很重要。"
+      },
+      IRLD: {
+        name: "学术房东",
+        desc: "【挂名包租公】指导、资源、情感支持都很有限，却仍然要求你交出一份像样答卷。学生在这种环境里最需要外部合作和强力自救。"
+      },
+      IRLS: {
+        name: "深渊监考官",
+        desc: "【负能量黑洞】不给资源、不做指导，却还要持续质疑你的能力和进度。遇到这种类型，尽早寻找副导师、合作老师或校外支持系统，会非常关键。"
+      }
+    };
+
+    const dims = [
+      { label: "学术参与", key: "A", icon: "📚", color: "var(--c-a)" },
+      { label: "情感支持", key: "E", icon: "❤️", color: "var(--c-e)" },
+      { label: "资源获取", key: "G", icon: "💰", color: "var(--c-g)" },
+      { label: "沟通清晰", key: "D", icon: "💬", color: "var(--c-d)" }
+    ];
+
+    const optionList = [
+      { label: "🔥 非常符合", value: 5 },
+      { label: "👍 比较符合", value: 4 },
+      { label: "😐 一般 / 看情况", value: 3 },
+      { label: "👎 比较不符合", value: 2 },
+      { label: "❌ 完全不符合", value: 1 }
+    ];
+
+    const state = {
+      currentIdx: 0,
+      answers: Array(questions.length).fill(null),
+      mode: "quiz"
+    };
+
+    const els = {
+      quizUI: document.getElementById("quiz-ui"),
+      result: document.getElementById("result"),
+      questionArea: document.getElementById("question-area"),
+      progress: document.getElementById("progress"),
+      progressVal: document.getElementById("progress-val"),
+      progressDone: document.getElementById("progress-done"),
+      resCode: document.getElementById("res-code"),
+      resName: document.getElementById("res-name"),
+      resSubtitle: document.getElementById("res-subtitle"),
+      resStats: document.getElementById("res-stats"),
+      resDesc: document.getElementById("res-desc"),
+      retryBtn: document.getElementById("retry-btn"),
+      copyBtn: document.getElementById("copy-btn"),
+      shareBtn: document.getElementById("share-btn"),
+      toast: document.getElementById("toast")
+    };
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (
+          parsed &&
+          Array.isArray(parsed.answers) &&
+          parsed.answers.length === questions.length
+        ) {
+          state.answers = parsed.answers;
+          state.currentIdx = Number.isInteger(parsed.currentIdx) ? parsed.currentIdx : 0;
+          state.mode = parsed.mode === "result" ? "result" : "quiz";
+        }
+      } catch (_) {}
+    }
+
+    function clearState() {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+
+    function getAnsweredCount() {
+      return state.answers.filter(v => v !== null).length;
+    }
+
+    function getDimScore(dimKey) {
+      let total = 0;
+      questions.forEach((q, i) => {
+        if (q.d === dimKey && state.answers[i] !== null) total += state.answers[i];
+      });
+      return total;
+    }
+
+    function getDimAverage(dimKey) {
+      return getDimScore(dimKey) / QUESTIONS_PER_DIM;
+    }
+
+    function getDimPercent(dimKey) {
+      const avg = getDimAverage(dimKey);
+      return Math.round(((avg - 1) / 4) * 100);
+    }
+
+    function getTypeCode() {
+      return (
+        (getDimAverage("A") > THRESHOLD ? "A" : "I") +
+        (getDimAverage("E") > THRESHOLD ? "E" : "R") +
+        (getDimAverage("G") > THRESHOLD ? "G" : "L") +
+        (getDimAverage("D") > THRESHOLD ? "D" : "S")
+      );
+    }
+
+    function getSubtitle(code) {
+      const percents = dims.map(d => getDimPercent(d.key));
+      const highCount = percents.filter(v => v >= 80).length;
+      const lowCount = percents.filter(v => v <= 35).length;
+
+      if (highCount === 4) return "四维几乎全高，是导师界的高配稀有款。";
+      if (highCount === 3) return "整体配置非常能打，属于明显偏强的一类。";
+      if (lowCount === 4) return "这位导师的支持度整体偏低，现实里大概率很考验自救。";
+      if (code.startsWith("AE")) return "学术投入和支持感都在线，读起来通常更有安全感。";
+      if (code.startsWith("AR")) return "学术要求强，但压力和控制感大概率也不会低。";
+      if (code.startsWith("IE")) return "更像宽松放养型，适合自驱力很强的人。";
+      if (code.startsWith("IR")) return "支持感偏弱，很多事情可能需要你自己硬扛。";
+      return "你的导师画像已经生成，看看是不是准得离谱。";
+    }
+
+    function updateProgressUI() {
+      const total = questions.length;
+      const current = Math.min(state.currentIdx + 1, total);
+      const answered = getAnsweredCount();
+      const pct = (answered / total) * 100;
+
+      els.progress.style.width = `${pct}%`;
+      els.progressVal.textContent = `第 ${current} / ${total} 题`;
+      els.progressDone.textContent = `已完成 ${answered} / ${total}`;
+    }
+
+    function renderQuestion() {
+      state.mode = "quiz";
+      const q = questions[state.currentIdx];
+      const selected = state.answers[state.currentIdx];
+
+      els.result.style.display = "none";
+      els.quizUI.style.display = "block";
+
+      els.questionArea.innerHTML = `
+        <div class="question-card">
+          <div class="question-index">QUESTION ${String(state.currentIdx + 1).padStart(2, "0")}</div>
+          <h2 class="question-title">${q.q}</h2>
+
+          <div class="options" role="group" aria-label="作答选项">
+            ${optionList.map(opt => `
+              <button
+                type="button"
+                class="opt-btn ${selected === opt.value ? "is-selected" : ""}"
+                data-value="${opt.value}"
+                aria-pressed="${selected === opt.value ? "true" : "false"}"
+              >
+                ${opt.label}
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="quiz-actions">
+            <div class="helper-text">
+              支持自动保存进度。答题时可随时返回上一题修改。
+            </div>
+            <button
+              type="button"
+              class="btn-ghost"
+              id="prev-btn"
+              ${state.currentIdx === 0 ? "disabled" : ""}
+            >
+              上一题
+            </button>
+          </div>
+        </div>
+      `;
+
+      updateProgressUI();
+    }
+
+    function renderResult() {
+      const code = getTypeCode();
+      const res = resultLib[code] || resultLib.IELD;
+
+      els.quizUI.style.display = "none";
+      els.result.style.display = "block";
+
+      els.resCode.textContent = code;
+      els.resName.textContent = res.name;
+      els.resSubtitle.textContent = getSubtitle(code);
+      els.resDesc.textContent = res.desc;
+
+      els.resStats.innerHTML = dims.map(d => {
+        const pct = getDimPercent(d.key);
+        return `
+          <div class="stat-row">
+            <div class="stat-label">
+              <span class="stat-left"><span>${d.icon}</span><span>${d.label}</span></span>
+              <span>${pct}%</span>
+            </div>
+            <div class="stat-track">
+              <div class="stat-bar" style="width:${pct}%; background:${d.color};"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      state.mode = "result";
+      state.currentIdx = questions.length;
+      saveState();
+    }
+
+    function answerCurrent(value) {
+      state.answers[state.currentIdx] = value;
+
+      if (state.currentIdx < questions.length - 1) {
+        state.currentIdx += 1;
         saveState();
         renderQuestion();
-    } else {
-        clearState();
-        showResult();
+      } else {
+        saveState();
+        renderResult();
+      }
     }
-}
 
-function updateProgressUI() {
-    const total = questions.length;
-    const current = currentIdx + 1;
-    const pct = (currentIdx / total) * 100;
-    document.getElementById('progress').style.width = pct + '%';
-    document.getElementById('progress-val').innerText = `第 ${current} / ${total} 题`;
-}
+    function goPrev() {
+      if (state.currentIdx > 0) {
+        state.currentIdx -= 1;
+        saveState();
+        renderQuestion();
+      }
+    }
 
-function showResult() {
-    document.getElementById('quiz-ui').style.display = 'none';
-    
-    // 赋分整改逻辑：平均分判定
-    const code = 
-        (scores.A / QUESTIONS_PER_DIM > THRESHOLD ? 'A' : 'I') +
-        (scores.E / QUESTIONS_PER_DIM > THRESHOLD ? 'E' : 'R') +
-        (scores.G / QUESTIONS_PER_DIM > THRESHOLD ? 'G' : 'L') +
-        (scores.D / QUESTIONS_PER_DIM > THRESHOLD ? 'D' : 'S');
-    
-    const res = resultLib[code] || resultLib["IELD"];
-    document.getElementById('res-code').innerText = code;
-    document.getElementById('res-name').innerText = res.name;
-    document.getElementById('res-desc').innerText = res.desc;
+    function resetQuiz() {
+      state.currentIdx = 0;
+      state.answers = Array(questions.length).fill(null);
+      state.mode = "quiz";
+      clearState();
+      renderQuestion();
+      showToast("已重置，可以重新开始");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
-    // 渲染能量柱 (1-5分映射到 0-100%)
-    const dims = [
-        { label: '学术参与', key: 'A', icon: '📚' },
-        { label: '情感支持', key: 'E', icon: '❤️' },
-        { label: '资源获取', key: 'G', icon: '💰' },
-        { label: '沟通清晰', key: 'D', icon: '💬' }
-    ];
-    
-    document.getElementById('res-stats').innerHTML = dims.map(d => {
-        const avg = scores[d.key] / QUESTIONS_PER_DIM;
-        const pct = Math.round(((avg - 1) / 4) * 100); // 最小1分(0%), 最大5分(100%)
-        return `
-            <div class="stat-row">
-                <div class="stat-label"><span>${d.icon} ${d.label}</span><span>${pct}%</span></div>
-                <div class="stat-track"><div class="stat-bar" style="width: ${pct}%"></div></div>
-            </div>
-        `;
-    }).join('');
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch (_) {}
 
-    document.getElementById('result').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        return ok;
+      } catch (_) {
+        return false;
+      }
+    }
 
-// --- 3. 辅助功能 ---
-function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ currentIdx, scores }));
-}
+    function buildResultText() {
+      const code = getTypeCode();
+      const res = resultLib[code] || resultLib.IELD;
+      return [
+        `我的导师测试结果：${code}｜${res.name}`,
+        getSubtitle(code),
+        res.desc,
+        `来测测你的：${location.href}`
+      ].join("\n");
+    }
 
-function loadState() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    try {
-        const data = JSON.parse(raw);
-        currentIdx = data.currentIdx || 0;
-        scores = data.scores || { A: 0, E: 0, G: 0, D: 0 };
-    } catch (e) {}
-}
+    async function handleCopyResult() {
+      const ok = await copyToClipboard(buildResultText());
+      showToast(ok ? "结果已复制" : "复制失败，请手动复制");
+    }
 
-function clearState() { localStorage.removeItem(STORAGE_KEY); }
+    async function handleShare() {
+      const shareData = {
+        title: "学术MBTI：测测你的导师属于哪一类？",
+        text: buildResultText(),
+        url: location.href
+      };
 
-function resetQuiz() {
-    clearState();
-    location.reload();
-}
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          showToast("已唤起分享");
+          return;
+        } catch (_) {}
+      }
 
-init();
-</script>
+      const ok = await copyToClipboard(location.href);
+      showToast(ok ? "链接已复制" : "复制失败，请手动复制");
+    }
+
+    let toastTimer = null;
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        els.toast.classList.remove("show");
+      }, 1800);
+    }
+
+    function bindEvents() {
+      els.questionArea.addEventListener("click", (e) => {
+        const optBtn = e.target.closest(".opt-btn");
+        if (optBtn) {
+          answerCurrent(Number(optBtn.dataset.value));
+          return;
+        }
+
+        const prevBtn = e.target.closest("#prev-btn");
+        if (prevBtn) {
+          goPrev();
+        }
+      });
+
+      els.retryBtn.addEventListener("click", resetQuiz);
+      els.copyBtn.addEventListener("click", handleCopyResult);
+      els.shareBtn.addEventListener("click", handleShare);
+
+      document.addEventListener("keydown", (e) => {
+        if (state.mode !== "quiz") return;
+
+        if (["1", "2", "3", "4", "5"].includes(e.key)) {
+          const valueMap = { "1": 5, "2": 4, "3": 3, "4": 2, "5": 1 };
+          answerCurrent(valueMap[e.key]);
+        }
+
+        if ((e.key === "Backspace" || e.key === "ArrowLeft") && state.currentIdx > 0) {
+          if (
+            document.activeElement &&
+            ["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)
+          ) {
+            return;
+          }
+          e.preventDefault();
+          goPrev();
+        }
+      });
+    }
+
+    function init() {
+      loadState();
+      bindEvents();
+
+      const allAnswered = state.answers.every(v => v !== null);
+      if (state.mode === "result" && allAnswered) {
+        renderResult();
+      } else {
+        if (state.currentIdx >= questions.length) state.currentIdx = questions.length - 1;
+        renderQuestion();
+      }
+    }
+
+    init();
+  </script>
 </body>
 </html>
