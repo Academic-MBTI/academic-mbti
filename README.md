@@ -1,5 +1,9 @@
 © 2026 导师图鉴（SPTI）. All rights reserved.
+
 未经作者授权，不得复制、改编、镜像部署或用于商业用途。
+
+Contact / 联系方式:
+macroecology@163.com
 
 <!--
 **Academic-MBTI/academic-mbti** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
