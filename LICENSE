@@ -1,21 +1,79 @@
-MIT License
+导师图鉴（SPTI）专有版权许可声明
+Supervisor Profile Type Index (SPTI) Proprietary License
 
-Copyright (c) 2026 Academic-MBTI
+Copyright (c) 2026 Bin Sun. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+本项目及其全部内容为作者原创作品，受版权法及其他适用知识产权法律保护。
+This project and all of its contents are original works of the author and are protected by copyright law and other applicable intellectual property laws.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+本项目包括但不限于以下内容：
+The project includes, but is not limited to, the following:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+- 网页源代码 / website source code
+- 页面结构与交互逻辑 / page structure and interaction logic
+- 题库设计与问题文本 / question design and item texts
+- 类型划分方法与结果判定逻辑 / type classification method and result determination logic
+- 结果文案与描述文本 / result copy and descriptive text
+- 图像、图标、插画与界面设计 / images, icons, illustrations, and interface design
+- 品牌名称、标识、标题与相关素材 / brand name, labels, titles, and related assets
+
+一、授权范围 / Scope of Permission
+
+仅允许公众在非商业前提下访问和使用本项目已公开发布的网页版本，用于个人浏览、体验和分享链接。
+The public is only permitted to access and use the publicly released web version of this project for personal, non-commercial browsing, use, and link sharing.
+
+除上述有限许可外，作者未授予任何明示或默示的其他权利。
+Except for the limited permission above, no other rights are granted, whether express or implied.
+
+二、禁止事项 / Restrictions
+
+未经作者事先书面许可，任何个人或组织不得：
+Without prior written permission from the author, no individual or organization may:
+
+1. 复制、转载、摘录、传播本项目的全部或实质性内容；
+   copy, reproduce, excerpt, or redistribute all or any substantial part of this project;
+
+2. 修改、改编、翻译、反向工程、反编译、重构或二次创作本项目；
+   modify, adapt, translate, reverse engineer, decompile, reconstruct, or create derivative works based on this project;
+
+3. 镜像部署、重新发布、重新分发，或以任何方式在其他平台重新上线本项目或其实质性部分；
+   mirror, redeploy, republish, redistribute, or otherwise relaunch this project or any substantial part of it on other platforms;
+
+4. 将本项目用于商业用途、营利用途、广告引流、付费服务、课程培训、内容变现或任何直接或间接盈利活动；
+   use this project for commercial purposes, monetization, advertising traffic generation, paid services, educational products, or any direct or indirect profit-making activity;
+
+5. 删除、隐藏、更改本项目的版权声明、署名信息、品牌标识或来源信息；
+   remove, conceal, alter, or tamper with any copyright notice, attribution, branding, or source information associated with this project;
+
+6. 将本项目或其核心内容作为开源项目、模板、二次产品、衍生网页或可复用资源进行发布；
+   publish this project or its core contents as an open-source project, template, derivative product, derivative webpage, or reusable resource.
+
+三、允许的行为 / Permitted Uses
+
+在不复制项目核心内容的前提下，允许：
+The following are permitted, provided that the core contents of the project are not copied:
+
+- 对本项目进行非商业性质的链接分享；
+  non-commercial sharing of links to this project;
+
+- 在明确注明来源的前提下，对本项目进行非商业性的简要介绍或评论；
+  non-commercial brief introduction or commentary on this project, with clear attribution;
+
+- 出于个人体验目的访问本项目公开页面。
+  accessing the publicly available pages of this project for personal use.
+
+四、侵权处理 / Infringement
+
+任何未经授权的复制、改编、镜像部署、重新发布或商业使用，均可能构成侵权。
+Any unauthorized copying, adaptation, mirroring, redeployment, republication, or commercial use may constitute infringement.
+
+作者保留采取包括但不限于要求删除、要求停止传播、发出侵权通知、平台投诉及追究法律责任在内的一切权利。
+The author reserves the right to take any action deemed necessary, including but not limited to requesting removal, demanding cessation of distribution, sending infringement notices, filing platform complaints, and pursuing legal remedies.
+
+五、授权申请 / Permission Requests
+
+如需转载、合作、授权、媒体使用、教学使用或其他特殊用途，请提前联系作者并获得书面许可。
+For republication, collaboration, licensing, media use, educational use, or any other special purpose, please contact the author in advance and obtain written permission.
+
+Contact / 联系方式:
+macroecology@163.com
